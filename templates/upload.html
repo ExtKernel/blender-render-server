@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload File</title>
+    <title>Upload Blender File</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,8 +30,9 @@
             flex-direction: column;
             align-items: center;
         }
-        input[type="file"] {
+        input[type="file"], input[type="number"] {
             margin-bottom: 1rem;
+            width: 100%;
         }
         input[type="submit"] {
             padding: 0.5rem 1rem;
@@ -45,15 +46,79 @@
         input[type="submit"]:hover {
             background-color: #2980b9;
         }
+        .render-type {
+            margin-bottom: 1rem;
+        }
+        #animatedOptions {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="upload-container">
-        <h1>Upload File</h1>
-        <form action="/result" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".blend" />
-            <input type="submit" value="Upload">
+        <h1>Upload Blender File</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".blend" required />
+
+            <div class="render-type">
+                <input type="radio" id="static" name="renderType" value="static" checked>
+                <label for="static">Static Render</label>
+                <input type="radio" id="animated" name="renderType" value="animated">
+                <label for="animated">Animated Render</label>
+            </div>
+
+            <div id="animatedOptions">
+                <input type="number" id="start_frame" name="start_frame" placeholder="Start Frame (default: 1)" min="1">
+                <input type="number" id="end_frame" name="end_frame" placeholder="End Frame (default: 250)" min="1">
+            </div>
+
+            <input type="submit" value="Upload and Render">
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('uploadForm');
+            const renderTypeInputs = document.getElementsByName('renderType');
+            const animatedOptions = document.getElementById('animatedOptions');
+
+            renderTypeInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    animatedOptions.style.display = this.value === 'animated' ? 'block' : 'none';
+                });
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const renderType = formData.get('renderType');
+                const url = renderType === 'static' ? '/static/result' : '/animated/result';
+
+                if (renderType === 'animated') {
+                    formData.set('start_frame', document.getElementById('start_frame').value || '1');
+                    formData.set('end_frame', document.getElementById('end_frame').value || '250');
+                }
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(handleResponse)
+                .catch(handleError);
+            });
+
+            function handleResponse(response) {
+                if (!response.ok) throw new Error('Server responded with an error');
+                return response.text().then(html => {
+                    document.body.innerHTML = html;
+                });
+            }
+
+            function handleError(error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
 </body>
 </html>
