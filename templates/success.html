@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Render Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .success-container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #2ecc71;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .download-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .download-link:hover {
+            background-color: #2980b9;
+        }
+        .back-link {
+            display: block;
+            margin-top: 1rem;
+            color: #7f8c8d;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <h1>File Rendered Successfully!</h1>
+        <p>Your file is now ready for download.</p>
+        <a href="{{ url_for('download', filename=filename) }}" class="download-link">Download Rendered File</a>
+        <a href="/" class="back-link">Back to Upload</a>
+    </div>
+</body>
+</html>
