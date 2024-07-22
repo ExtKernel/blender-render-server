@@ -28,15 +28,15 @@ This simple Flask-powered server allows you to offload Blender rendering tasks t
    ```bash
    git clone https://github.com/ExtKernel/blender-render-server
    ```
-2. Navigate to the Project Directory:
+2. **Navigate to the Project Directory**:
    ```bash
    cd blender-render-server
    ```
-3. Install Dependencies:
+3. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
-4. Run the Server:
+4. **Run the Server**:
    ```bash
    flask run
    ```
@@ -45,18 +45,21 @@ This simple Flask-powered server allows you to offload Blender rendering tasks t
 The Docker image of this application contains both the server and Blender, so it works "out of the box".
 
 1. **Pull the Docker image from Docker hub**
+
    Download the latest Docker image from Docker Hub:
    ~~~bash
    docker pull exkernel/blender-render-server:latest
    ~~~
 
 2. **Run a container using the image**
+
    Start a container from the downloaded image:
    ~~~bash
    docker run -d -p 5000:5000 exkernel/blender-render-server:latest
    ~~~
-   You can specify any desirable port, the application is listening on any host.
+   You can choose a different port if needed. The application will listen on any host and port you specify.
 3. **Access the web UI**
+
    Open your web browser and go to the following URL to access the web UI:
    ~~~bash
    http://<host>:<port>/
